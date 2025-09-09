@@ -117,6 +117,12 @@
     }
   }
 
+  // intersect arrays. source: GPT
+  function haveCommonString(arr1, arr2) {
+    if (arr2.length == 0) return true // no filter
+    const set1 = new Set(arr1);
+    return arr2.some(str => set1.has(str));
+  }
 
   async function fetchIssues() {
     const authToken = defaultAuthToken;
@@ -139,16 +145,17 @@
       // Récupérer les issues depuis l'API GitHub
 
       const allIssues = await getAllIssues(owner, repo, defaultAuthToken);
-      const allIssuesHTML = allIssues.map((issue) => toHtml(issue));
+      const stories = await allIssues.filter(i => haveCommonString(i.labels.map(l => l.name), filterTags))
+      const allStoriesHTML = stories.map((issue) => toHtml(issue));
 
-      if (allIssues.length === 0) {
-        logsDiv.innerHTML = "<p>Aucune issue trouvée</p>";
+      if (allStoriesHTML.length === 0) {
+        divLogs.innerHTML = "<p>Aucune story trouvée</p>";
         return;
       }
 
-      divContent.innerHTML = allIssuesHTML.join()
+      divContent.innerHTML = allStoriesHTML.join()
     } catch (error) {
-      logsDiv.innerHTML = `<p style="color: red;">Erreur : ${error.message}</p>`;
+      divLogs.innerHTML = `<p style="color: red;">Erreur : ${error.message}</p>`;
     }
   }
 
@@ -197,6 +204,7 @@
       await fetchIssues();
       const selectedRepo = repos.find((r) => r.url == dpdProjects.value);
     });
+
   }
 
 </script>

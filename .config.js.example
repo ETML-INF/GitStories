@@ -16,4 +16,5 @@ const repos = [
   { url: "https://github.com/bill/myApp" },
   { url: "https://github.com/ETML-INF/escape" , tags: ["UserStory", "TechnicalStory"]}
 ];
+const filterTags = []
 const defaultAuthToken = "ghp_o0i..."; // Make sure the token has full private repo privileges
