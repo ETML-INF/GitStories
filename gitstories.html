@@ -154,7 +154,7 @@
         return;
       }
 
-      divContent.innerHTML = allStoriesHTML.join()
+      divContent.innerHTML = allStoriesHTML.join("")
     } catch (error) {
       divLogs.innerHTML = `<p style="color: red;">Erreur : ${error.message}</p>`;
     }
@@ -185,6 +185,7 @@
   }
   /// Extracts information from the commit description and make them available as fields of the commit object
   function toHtml(issue) {
+    if (!issue.body) return 
     const description = DOMPurify.sanitize(marked.parse(issue.body));
     return `<div><h3>${issue.title}</h3><p>${description}</p></div>`
   }
